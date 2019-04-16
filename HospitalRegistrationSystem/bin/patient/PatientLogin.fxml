@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="184.0" prefWidth="312.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="patient.PatientLoginController">
+   <children>
+      <Label layoutX="30.0" layoutY="36.0" text="用户名" />
+      <TextField fx:id="user_textfield" layoutX="89.0" layoutY="31.0" prefHeight="31.0" prefWidth="187.0" />
+      <Label layoutX="38.0" layoutY="81.0" text="密码" />
+      <PasswordField fx:id="passwd_textfield" layoutX="90.0" layoutY="76.0" prefHeight="31.0" prefWidth="187.0" />
+      <Button fx:id="submit_button" layoutX="158.0" layoutY="128.0" mnemonicParsing="false" onAction="#onSubmitButtonAction" text="登陆" />
+      <Button fx:id="exit_button" layoutX="226.0" layoutY="128.0" mnemonicParsing="false" onAction="#onExitButtonAction" text="退出" />
+   </children>
+</AnchorPane>

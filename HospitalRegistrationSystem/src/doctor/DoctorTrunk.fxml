@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="453.0" prefWidth="627.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="doctor.DoctorTrunkController">
+   <children>
+      <TabPane prefHeight="419.0" prefWidth="627.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="病人列表">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="382.0" prefWidth="627.0">
+                     <children>
+                        <TableView fx:id="brlb_tabview" prefHeight="352.0" prefWidth="627.0">
+                          <columns>
+                            <TableColumn fx:id="ghbh_tabcol" editable="false" prefWidth="96.0" text="挂号编号" />
+                            <TableColumn fx:id="brmc_tabcol" editable="false" prefWidth="101.0" text="病人名称" />
+                              <TableColumn fx:id="ghrq_tabcol" editable="false" prefWidth="161.0" text="挂号日期时间（UTC）" />
+                              <TableColumn fx:id="hzlb_tabcol" editable="false" prefWidth="90.0" text="号种类别" />
+                          </columns>
+                        </TableView>
+                        <Button fx:id="handled_button" layoutX="537.0" layoutY="358.0" mnemonicParsing="false" onAction="#onHandledButtonAction" text="设为已看病" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="收入列表">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="14.0" layoutY="10.0" text="起始时间：" />
+                        <DatePicker fx:id="start_datepicker" layoutX="74.0" layoutY="6.0" />
+                        <Label layoutX="314.0" layoutY="10.0" text="结束时间：" />
+                        <DatePicker fx:id="end_datepicker" layoutX="374.0" layoutY="6.0" />
+                        <TableView fx:id="srlb_tabview" layoutY="37.0" prefHeight="348.0" prefWidth="627.0">
+                          <columns>
+                            <TableColumn fx:id="ksmc_tabcol" prefWidth="75.0" text="科室名称" />
+                            <TableColumn fx:id="ysbh_tabcol" prefWidth="105.0" text="医生编号" />
+                              <TableColumn fx:id="ysmc_tabcol" prefWidth="82.0" text="医生名称" />
+                              <TableColumn fx:id="hzlb2_tabcol" prefWidth="79.0" text="号种类别" />
+                              <TableColumn fx:id="ghrc_tabcol" prefWidth="75.0" text="挂号人次" />
+                              <TableColumn fx:id="srhj_tabcol" prefWidth="93.0" text="收入合计" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+      <Button fx:id="refresh_button" layoutX="14.0" layoutY="419.0" mnemonicParsing="false" onAction="#onRefreshButtonAction" text="刷新全部列表" />
+   </children>
+</AnchorPane>
