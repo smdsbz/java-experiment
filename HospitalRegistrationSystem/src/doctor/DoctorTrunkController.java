@@ -169,7 +169,7 @@ public class DoctorTrunkController {
 		}
 		Timestamp start = Timestamp.from(start_datepicker.getValue().atStartOfDay(ZoneOffset.systemDefault()).toInstant());
 		Timestamp end = Timestamp.from(end_datepicker.getValue().plusDays(1).atStartOfDay(ZoneOffset.systemDefault()).toInstant());
-		System.out.println(start); System.out.println(end);
+//		System.out.println(start); System.out.println(end);
 		if (end.before(start)) {
 			Alert alert = new Alert(AlertType.WARNING, "结束时间必须在起始时间之后！");
 			alert.show();

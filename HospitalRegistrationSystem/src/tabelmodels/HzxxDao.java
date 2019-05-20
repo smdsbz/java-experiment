@@ -145,9 +145,11 @@ public class HzxxDao extends BaseMysqlDao implements PyzsQueryableDao {
 				"SELECT `t_hzxx`.`hzmc` FROM `t_hzxx`, `t_ksxx` WHERE " +
 				"(`t_hzxx`.`ksbh` = `t_ksxx`.`ksbh`) AND " +
 				"(`t_ksxx`.`ksmc` = ?) AND " +
+				"(`t_hzxx`.`sfzj` = ?) AND " +
 				"(`t_hzxx`.`pyzs` LIKE ?)");
 		ps.setString(1, ksmc);
-		ps.setString(2, pyzs + "%");
+		ps.setBoolean(2, sfzj);
+		ps.setString(3, pyzs + "%");
 		ResultSet rset = ps.executeQuery();
 		rset.beforeFirst();
 		LinkedList<String> hzmc = new LinkedList<String>();

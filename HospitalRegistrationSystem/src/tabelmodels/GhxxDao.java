@@ -75,6 +75,7 @@ public class GhxxDao extends BaseMysqlDao {
 	 * @param ysbh 医生编号
 	 * @param brxx 病人信息表管理对象
 	 * @param brbh 病人编号
+	 * @param jkje 交款金额
 	 * @return <ul>
 	 *           <li><code>"xxxx not found"</code> - corresponding ID field not found.</li>
 	 *           <li><code>"no available ghbh"</code> - too many records in table, i.e. <code>ghbh</code> exceeding
@@ -86,7 +87,7 @@ public class GhxxDao extends BaseMysqlDao {
 	 * @throws SQLException 
 	 * @throws IllegalStateException 
 	 */
-	public String insertRecord(HzxxDao hzxx, String hzbh, KsysDao ksys, String ysbh, BrxxDao brxx, String brbh)
+	public String insertRecord(HzxxDao hzxx, String hzbh, KsysDao ksys, String ysbh, BrxxDao brxx, String brbh, double jkje)
 			throws IllegalStateException, SQLException {
 		if (!ksys.hasYsbh(ysbh)) {
 			return "ysbh not found";
@@ -119,7 +120,7 @@ public class GhxxDao extends BaseMysqlDao {
 		ts = rset.getTimestamp("timestamp");
 		ghfy = rset.getBigDecimal("ghfy");
 		ycje = rset.getBigDecimal("ycje");
-		BigDecimal ycje_new = ycje.subtract(ghfy);
+		BigDecimal ycje_new = ycje.subtract(ghfy).add(new BigDecimal(jkje));
 		// cost balance from t_brxx
 		if (ycje_new.doubleValue() < 0.0) {
 			return "insufficient balance";

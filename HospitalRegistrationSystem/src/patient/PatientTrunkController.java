@@ -103,9 +103,11 @@ public class PatientTrunkController {
 				if (hundred_val % 1.0 != 0.0) {	// NOTE Strict equal!
 					hundred_val = ((double)(int)hundred_val) + 1.0;
 				}
+				Platform.runLater(() -> submit_button.requestFocus());
 				return hundred_val / 100.0;
 			}
 		}));
+		jkje_textfield.setText("0.00");
 
 		/**** Completions with pyzs ****/
 		ksmc_combobox.getEditor().setOnKeyTyped(new EventHandler<KeyEvent>() {
@@ -297,40 +299,43 @@ public class PatientTrunkController {
 		ksmc_combobox.valueProperty().addListener((ov, old, neo) -> ysxm_combobox.setValue(null));
 		hzlb_combobox.valueProperty().addListener((ov, old, neo) -> ysxm_combobox.setValue(null));
 		ysxm_combobox.valueProperty().addListener((ov, old, neo) -> hzmc_combobox.setValue(null));
-		// set 应缴金额 and 剩余金额 on 号种名称 changed
-		hzmc_combobox.valueProperty().addListener((ov, old, neo) -> {
-			String hzmc = neo;
-			// if no 号种名称 available, clear calculated fields
-			if (hzmc == null || hzmc.isEmpty()) {
+		// set 应缴金额 and 剩余金额 on 号种名称 / 交款金额 changed
+	 	hzmc_combobox.valueProperty().addListener((ov, old, neo) -> onHzmcOrJkjeChanged());
+	 	jkje_textfield.focusedProperty().addListener((ov, old, neo) -> { if (neo == false) onHzmcOrJkjeChanged(); });
+	}
+	
+	private void onHzmcOrJkjeChanged() {
+		String hzmc = hzmc_combobox.getValue();
+		// if no 号种名称 available, clear calculated fields
+		if (hzmc == null || hzmc.isEmpty()) {
+			syje_textfield.clear();
+			yjje_textfield.clear();
+			return;
+		}
+		try {
+			String hzbh = hzxx_dao.getHzbhByHzmc(hzmc);
+			// clear calculated field on invalid 号种名称
+			if (hzbh == null) {
 				syje_textfield.clear();
 				yjje_textfield.clear();
 				return;
 			}
-			try {
-				String hzbh = hzxx_dao.getHzbhByHzmc(hzmc);
-				// clear calculated field on invalid 号种名称
-				if (hzbh == null) {
-					syje_textfield.clear();
-					yjje_textfield.clear();
-					return;
-				}
-				double ghfy = hzxx_dao.getGhfyByHzbh(hzbh);	// 挂号费用
-				PatientSessionData brdata = (PatientSessionData)hzmc_combobox.getScene().getUserData();
-				double ycje = brxx_dao.getYcjeByBrbh(brdata.brbh);	// 预存金额
-				String jkje_str = jkje_textfield.getText();
-				double jkje = 0.0;	// 交款金额
-				if (!jkje_str.isBlank()) {
-					jkje = Double.parseDouble(jkje_str);
-				}
-				double syje = ycje + jkje - ghfy;	// 剩余金额
-				double yjje = syje > 0.0 ? 0.0 : -syje;	// 应缴金额
-				syje_textfield.setText(String.format("%.2f", syje));
-				yjje_textfield.setText(String.format("%.2f", yjje));
-			} catch (IllegalStateException | SQLException e) {
-				e.printStackTrace();
-				Platform.exit();
+			double ghfy = hzxx_dao.getGhfyByHzbh(hzbh);	// 挂号费用
+			PatientSessionData brdata = (PatientSessionData)hzmc_combobox.getScene().getUserData();
+			double ycje = brxx_dao.getYcjeByBrbh(brdata.brbh);	// 预存金额
+			String jkje_str = jkje_textfield.getText();
+			double jkje = 0.0;	// 交款金额
+			if (!jkje_str.isBlank()) {
+				jkje = Double.parseDouble(jkje_str);
 			}
-		});
+			double syje = ycje + jkje - ghfy;	// 剩余金额
+			double yjje = syje > 0.0 ? 0.0 : -syje;	// 应缴金额
+			syje_textfield.setText(String.format("%.2f", syje));
+			yjje_textfield.setText(String.format("%.2f", yjje));
+		} catch (IllegalStateException | SQLException e) {
+			e.printStackTrace();
+			Platform.exit();
+		}
 	}
 
 	@FXML private void onSubmitButtonAction(ActionEvent evt) {
@@ -417,7 +422,7 @@ public class PatientTrunkController {
 		}
 		String ins_result = null;
 		try {
-			ins_result = ghxx_dao.insertRecord(hzxx_dao, hzbh, ksys_dao, ysbh, brxx_dao, brbh);
+			ins_result = ghxx_dao.insertRecord(hzxx_dao, hzbh, ksys_dao, ysbh, brxx_dao, brbh, jkje);
 		} catch (IllegalStateException | SQLException e) {
 			e.printStackTrace();
 			Platform.exit();

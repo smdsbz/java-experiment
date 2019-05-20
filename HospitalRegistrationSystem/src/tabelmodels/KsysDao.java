@@ -161,12 +161,11 @@ public class KsysDao extends BaseMysqlDao implements PyzsQueryableDao {
 				"SELECT `t_ksys`.`ysmc` FROM `t_ksys`, `t_ksxx` WHERE " +
 				"(`t_ksxx`.`ksbh` = `t_ksys`.`ksbh`) AND " +
 				"(`t_ksxx`.`ksmc` = ?) AND " +
-				"(`t_ksys`.`sfzj` = ?) AND " +
+				(sfzj ? "(`t_ksys`.`sfzj` = TRUE) AND " : "") +
 				"(`t_ksys`.`pyzs` LIKE ?)" +
 				(limit > 0 ? String.format(" LIMIT %d", limit) : ""));
 		ps.setString(1, ksmc);
-		ps.setBoolean(2, sfzj);
-		ps.setString(3, pyzs + "%");
+		ps.setString(2, pyzs + "%");
 		ResultSet rset = ps.executeQuery();
 		rset.beforeFirst();
 		LinkedList<String> retlist = new LinkedList<String>();
